@@ -34,6 +34,7 @@ void	print_coordinates(t_point *pt);
 t_map	*new_map(size_t width, size_t height);
 int measure_map(const char *file_name, int *width, int *height);
 t_map * parse_map(const char *string);
-void parse_line(char *line, t_map *map);
+int parse_line(char *line, t_map *map, int y_act);
+void	set_point(t_point *pt, double x, double y, double z);
 
 #endif //FDF_H

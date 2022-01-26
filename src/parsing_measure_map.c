@@ -40,7 +40,10 @@ int	calc_width(char *line)
 
 	split_line = ft_split(line, ' ');
 	if (! split_line)
+	{
+		free(line);
 		return (-1);
+	}
 	free(line);
 	tmp_width = (int) count_entries_in_2d_char_array(split_line);
 	free_2d_array((void **)split_line);
@@ -49,7 +52,7 @@ int	calc_width(char *line)
 
 int	prepare_exit(int fd, int status)
 {
-	gnl(fd, NULL);
+	gnl(-1, NULL);
 	close(fd);
 	return (status);
 }

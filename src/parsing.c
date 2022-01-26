@@ -14,6 +14,13 @@ t_point	*new_point(float x, float y, float z)
 	return (result);
 }
 
+void	set_point(t_point *pt, double x, double y, double z)
+{
+	pt->x = x;
+	pt->y = y;
+	pt->z = z;
+}
+
 t_map	*new_map(size_t width, size_t height)
 {
 	t_map	*result;
@@ -38,19 +45,36 @@ t_map	*new_map(size_t width, size_t height)
 	return (result);
 }
 
-void parse_line(char *line, t_map *map)
+int parse_line(char *line, t_map *map, int y_act)
 {
+	char	**split_line;
+	int		x_act;
 
+	x_act = 0;
+	split_line = ft_split(line, ' ');
+	if (! split_line)
+		return (1);
+	while (split_line[x_act])
+	{
+		set_point(&map->grid[x_act][y_act], \
+		x_act, y_act, ft_atoi(split_line[x_act]));
+		x_act++;
+	}
+	free_2d_array((void **) split_line);
+	return (0);
 }
+//		printf("x %d y %d z %d\n", x_act, y_act, ft_atoi(split_line[x_act]));
 
 t_map	*parse_map(const char *string)
 {
 	int		fd;
 	char	*line;
-	t_map	*result;
 	int		width;
 	int		height;
+	int		y_act;
+	t_map	*result;
 
+	y_act = 0;
 	fd = open(string, O_RDONLY);
 	if (fd < 0)
 		return (NULL);
@@ -59,9 +83,12 @@ t_map	*parse_map(const char *string)
 	result = new_map(width, height);
 	while (gnl(fd, &line))
 	{
-		break;
+		// handle error
+		parse_line(line, result, y_act);
+		free(line);
+		y_act++;
 	}
-	//gnl(fd, NULL);
+	gnl(fd, NULL);
 	close(fd);
 	return (result);
 }

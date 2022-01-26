@@ -84,8 +84,31 @@ Test(test_parsing, parse_map_with_one_point)
 
 Test(test_parsing, parse_one_line_with_one_column)
 {
-	char	*line = "0";
+	char	*line = "1";
 	t_map	*map = new_map(1, 1);
 
-	parse_line(line, map);
+	parse_line(line, map, 0);
+
+	cr_assert_eq(map->grid[0][0].x, 0);
+	cr_assert_eq(map->grid[0][0].y, 0);
+	cr_assert_eq(map->grid[0][0].z, 1);
+	free_2d_array(((void **)map->grid));
+	free(map);
+}
+
+Test(test_parsing, parse_one_line_with_two_columns)
+{
+	char	*line = "1 2";
+	t_map	*map = new_map(2, 1);
+
+	parse_line(line, map, 0);
+
+	cr_assert_eq(map->grid[0][0].x, 0);
+	cr_assert_eq(map->grid[0][0].y, 0);
+	cr_assert_eq(map->grid[0][0].z, 1);
+	cr_assert_eq(map->grid[1][0].x, 1);
+	cr_assert_eq(map->grid[1][0].y, 0);
+	cr_assert_eq(map->grid[1][0].z, 2);
+	free_2d_array(((void **)map->grid));
+	free(map);
 }

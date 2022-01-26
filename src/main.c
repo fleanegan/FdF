@@ -4,13 +4,6 @@
 #include <mlx.h>
 #include "FdF.h"
 
-void	set_point(t_point *pt, double x, double y, double z)
-{
-	pt->x = x;
-	pt->y = y;
-	pt->z = z;
-}
-
 void	print_coordinates(t_point *pt)
 {
 	printf("x %f, y %f, z %f\n", pt->x, pt->y, pt->z);
