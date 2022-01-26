@@ -26,6 +26,7 @@ SRC_NAME =	main.c \
 			isometric_projection.c \
 			parsing.c \
 			parsing_measure_map.c \
+			draw_grid.c \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 

@@ -14,6 +14,14 @@ t_point	*new_point(float x, float y, float z)
 	return (result);
 }
 
+void	*free_map(t_map **map)
+{
+	free_2d_array((void **)(*map)->grid);
+	free(*map);
+	*map = NULL;
+	return (NULL);
+}
+
 void	set_point(t_point *pt, double x, double y, double z)
 {
 	pt->x = x;
@@ -21,7 +29,7 @@ void	set_point(t_point *pt, double x, double y, double z)
 	pt->z = z;
 }
 
-t_map	*new_map(size_t width, size_t height)
+t_map	*new_map(int width, int height)
 {
 	t_map	*result;
 
@@ -32,15 +40,13 @@ t_map	*new_map(size_t width, size_t height)
 	if (! result->grid)
 		return (NULL);
 	result->grid[width] = NULL;
+	result->width = width;
+	result->height = height;
 	while (width--)
 	{
 		result->grid[width] = malloc((height) * sizeof(t_point));
 		if (! result->grid[width])
-		{
-			free_2d_array((void **)result->grid);
-			free(result);
-			return (NULL);
-		}
+			return (free_map(&result));
 	}
 	return (result);
 }
@@ -83,8 +89,11 @@ t_map	*parse_map(const char *string)
 	result = new_map(width, height);
 	while (gnl(fd, &line))
 	{
-		// handle error
-		parse_line(line, result, y_act);
+		if (parse_line(line, result, y_act))
+		{
+			free(line);
+			return (free_map(&result));
+		}
 		free(line);
 		y_act++;
 	}

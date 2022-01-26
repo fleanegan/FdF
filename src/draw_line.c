@@ -16,14 +16,13 @@ int	update_below(t_point *p0, t_point *pd, t_point *ps, int err)
 	return (err);
 }
 
-void	plot_line(t_point p0, t_point p1, t_data *img)
+void	draw_line(t_point p0, t_point p1, t_data *img)
 {
 	t_point	pd;
 	t_point	ps;
 	int		err;
 	int		err2;
 
-	puts("e");
 	pd.x = (int) ft_abs(p1.x - p0.x);
 	pd.y = (int) -ft_abs(p1.y - p0.y);
 	ps.x = 1 - 2 * (p0.x >= p1.x);
@@ -31,8 +30,6 @@ void	plot_line(t_point p0, t_point p1, t_data *img)
 	err = pd.x + pd.y;
 	while (1)
 	{
-		print_coordinates(&p0);
-		print_coordinates(&p1);
 		my_mlx_pixel_put(img, p0.x, p0.y, 0x00FF0000);
 		err2 = 2 * err;
 		if (((int)p0.x == (int)p1.x && (int)p0.y == (int)p1.y) \

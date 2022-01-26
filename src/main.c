@@ -46,12 +46,12 @@ void	test_pass_param(t_data *img)
 	print_coordinates(&p4);
 	print_coordinates(&p5);
 
-	plot_line(p0, p1, img);
-	//plot_line(p1, p3, img);
-	plot_line(p3, p5, img);
-	plot_line(p5, p4, img);
-	plot_line(p4, p2, img);
-	plot_line(p0, p2, img);
+	draw_line(p0, p1, img);
+	//draw_line(p1, p3, img);
+	draw_line(p3, p5, img);
+	draw_line(p5, p4, img);
+	draw_line(p4, p2, img);
+	draw_line(p0, p2, img);
 
 	p0.x -= 150;
 	p1.x -= 150;
@@ -93,13 +93,27 @@ void	test_pass_param(t_data *img)
 	p3.y += 100;
 	p4.y += 100;
 	p5.y += 100;
-	plot_line(p0, p1, img);
-	//plot_line(p1, p3, img);
-	plot_line(p3, p5, img);
-	plot_line(p5, p4, img);
-	plot_line(p4, p2, img);
-	plot_line(p0, p2, img);
+	draw_line(p0, p1, img);
+	//draw_line(p1, p3, img);
+	draw_line(p3, p5, img);
+	draw_line(p5, p4, img);
+	draw_line(p4, p2, img);
+	draw_line(p0, p2, img);
 	puts("reached end");
+}
+
+void	dummy(t_data *img)
+{
+	t_map	*map = parse_map("./test/assets/dummy_map_two_by_two");
+	if (! map)
+	{
+		ft_putendl_fd("map emptey sa mer", 1);
+		return ;
+	}
+	zoom_grid(map, 30);
+	project_grid(map);
+	move_grid(map, 150, 150, 0);
+	draw_grid(map, img);
 }
 
 int	main()
@@ -109,11 +123,12 @@ int	main()
 	t_data	img;
 
 	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 300, 300, "Hello world!");
-	img.img = mlx_new_image(mlx, 300, 300);
+	mlx_win = mlx_new_window(mlx, 400, 400, "Hello world!");
+	img.img = mlx_new_image(mlx, 400, 400);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	puts("before");
-	test_pass_param(&img);
+	//test_pass_param(&img);
+	dummy(&img);
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 	mlx_loop(mlx);
 	(void) mlx_win;
