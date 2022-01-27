@@ -17,15 +17,15 @@ void	draw_grid(t_map *map, t_data *img)
 			if (y < map->height - 1)
 			{
 				p1 = &map->grid[x][y + 1];
-				print_coordinates(p0);
-				print_coordinates(p1);
+//				print_coordinates(p0);
+//				print_coordinates(p1);
 				draw_line(*p0, *p1, img);
 			}
 			if (x < map->width - 1)
 			{
 				p1 = &map->grid[x + 1][y];
-				print_coordinates(p0);
-				print_coordinates(p1);
+//				print_coordinates(p0);
+//				print_coordinates(p1);
 				draw_line(*p0, *p1, img);
 			}
 			y++;

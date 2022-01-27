@@ -20,6 +20,7 @@ int	measure_map(const char *file_name, int *width, int *height)
 		*width = tmp_width;
 		(*height)++;
 	}
+	ft_putendl_fd("map measures ok", 1);
 	return (prepare_exit(fd, 0));
 }
 

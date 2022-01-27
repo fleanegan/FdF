@@ -30,6 +30,12 @@ void	draw_line(t_point p0, t_point p1, t_data *img)
 	err = pd.x + pd.y;
 	while (1)
 	{
+		if (p0.x < 0 || p0.y < 0 || p0.x >= img->window_size.x_max || p0.y >= img->window_size.y_max)
+		{
+			print_coordinates(&p0);
+			print_coordinates(&p1);
+			return ;
+		}
 		my_mlx_pixel_put(img, p0.x, p0.y, 0x00FF0000);
 		err2 = 2 * err;
 		if (((int)p0.x == (int)p1.x && (int)p0.y == (int)p1.y) \

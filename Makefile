@@ -6,7 +6,7 @@
 #    By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/22 16:08:15 by tsiguenz          #+#    #+#              #
-#    Updated: 2022/01/24 11:40:09 by fschlute         ###   ########.fr        #
+#    Updated: 2022/01/27 15:47:00 by fschlute         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,8 @@ else
 	MLXFLAGS = -L$(LIB_PATH)mlx -lmlx -framework OpenGL -framework AppKit -lm
 endif
 
+all: $(NAME)
+
 PRE: 
 	@echo 'pre exec'
 	@make -C $(LIB_PATH)/libft/ --no-print-directory
@@ -64,8 +66,6 @@ $(NAME): PRE $(OBJ)
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@mkdir -p $(OBJ_PATH)
 	$(CC) $(CFLAGS) $(LIBFT) -g -I/usr/include -I$(LIB_PATH)/mlx -I$(SRC_PATH) -o $@ -c $<
-
-all: $(NAME)
 
 clean:
 	@make clean -C $(LIB_PATH)libft/ --no-print-directory
