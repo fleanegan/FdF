@@ -1,13 +1,11 @@
 #include <stdio.h>
 #include <math.h>
 #include "libft.h" 
-#include <mlx.h>
 #include "FdF.h"
+#ifndef TESTING
+# include <mlx.h>
+#endif
 
-void	print_coordinates(t_point *pt)
-{
-	printf("x %f, y %f, z %f\n", pt->x, pt->y, pt->z);
-}
 
 void	test_pass_param(t_data *img)
 {
@@ -102,35 +100,51 @@ void	test_pass_param(t_data *img)
 	puts("reached end");
 }
 
-void	dummy(t_data *img)
+void	dummy(t_data *img, char *file_name)
 {
-	t_map	*map = parse_map("./test/assets/dummy_map_two_by_two");
+	t_map	*map = parse_map(file_name);
 	if (! map)
 	{
 		ft_putendl_fd("map emptey sa mer", 1);
 		return ;
 	}
-	zoom_grid(map, 30);
+	zoom_grid(map, 35, 3);
 	project_grid(map);
-	move_grid(map, 150, 150, 0);
+	zoom_grid(map, 1./35., 1./3.);
+	t_dimension_2d current_dimensions = measure_necessary_screen_space(map);
+	printf("height %d, curr ymin %d, curr ymax %d\n", img->window_size.y_max, current_dimensions.y_min, current_dimensions.y_max);
+	printf("width %d, curr xmin %d, curr xmax %d\n", img->window_size.x_max, current_dimensions.x_min, current_dimensions.x_max);
+	zoom_grid(map, 0.85 * calc_zoom_factor(&current_dimensions, &img->window_size), 0);
+	current_dimensions = measure_necessary_screen_space(map);
+	move_grid(map, (img->window_size.x_max - current_dimensions.x_min - current_dimensions.x_max) / 2,(img->window_size.y_max - current_dimensions.y_max) / 2, 0);
 	draw_grid(map, img);
+	printf("height %d, curr ymin %d, curr ymax %d\n", img->window_size.y_max, current_dimensions.y_min, current_dimensions.y_max);
+	printf("width %d, curr xmin %d, curr xmax %d\n", img->window_size.x_max, current_dimensions.x_min, current_dimensions.x_max);
 }
 
-int	main()
+#ifndef TESTING
+
+int	main(int argc, char **argv)
 {
 	void	*mlx;
 	void	*mlx_win;
 	t_data	img;
 
+	img.window_size.x_max = 1200;
+	img.window_size.y_max = 1000;
 	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 400, 400, "Hello world!");
-	img.img = mlx_new_image(mlx, 400, 400);
+	mlx_win = mlx_new_window(mlx, img.window_size.x_max, img.window_size.y_max, "Hello world!");
+	img.img = mlx_new_image(mlx, img.window_size.x_max, img.window_size.y_max);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	puts("before");
 	//test_pass_param(&img);
-	dummy(&img);
-	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
-	mlx_loop(mlx);
-	(void) mlx_win;
+	if (argc == 2)
+	{
+		dummy(&img, argv[1]);
+		mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
+		mlx_loop(mlx);
+	}
 	return (0);
 }
+
+#endif

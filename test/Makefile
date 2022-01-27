@@ -1,6 +1,7 @@
 SRC				= ../src/isometric_projection.c \
 				../src/parsing.c \
 				../src/parsing_measure_map.c \
+				../src/debug.c \
 
 TEST_HEADERS		= $(shell find ./ -type f -name "*.h")
 

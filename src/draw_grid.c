@@ -34,7 +34,7 @@ void	draw_grid(t_map *map, t_data *img)
 	}
 }
 
-void	zoom_grid(t_map *map, float factor)
+void zoom_grid(t_map *map, float xy_factor, float z_factor)
 {
 	int		x;
 	int		y;
@@ -47,7 +47,7 @@ void	zoom_grid(t_map *map, float factor)
 		while (y < map->height)
 		{
 			p0 = &map->grid[x][y];
-			set_point(p0, p0->x * factor, p0->y * factor, p0->z * factor);
+			set_point(p0, p0->x * xy_factor, p0->y * xy_factor, p0->z * z_factor);
 			y++;
 		}
 		x++;
