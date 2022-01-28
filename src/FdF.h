@@ -28,12 +28,15 @@ typedef struct s_map
 }		t_map;
 
 typedef struct s_data {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
+	void			*img;
+	char			*addr;
+	void			*mlx;
+	void			*mlx_win;
+	int				bits_per_pixel;
+	int				line_length;
+	int				endian;
 	t_dimension_2d	window_size;
+	t_map			*map;
 }	t_data;
 
 void			draw_line(t_point p0, t_point p1, t_data *img);
