@@ -8,9 +8,11 @@ t_point	*new_point(float x, float y, float z)
 	result = malloc(sizeof(t_point));
 	if (! result)
 		return (NULL);
-	result->x = x;
-	result->y = y;
-	result->z = z;
+	result->x_cart = x;
+	result->y_cart = y;
+	result->z_cart = z;
+	result->x_iso = 0;
+	result->y_iso = 0;
 	return (result);
 }
 
@@ -22,11 +24,17 @@ void	*free_map(t_map **map)
 	return (NULL);
 }
 
-void	set_point(t_point *pt, double x, double y, double z)
+void	set_point_cart(t_point *pt, float x, float y, float z)
 {
-	pt->x = x;
-	pt->y = y;
-	pt->z = z;
+	pt->x_cart = x;
+	pt->y_cart = y;
+	pt->z_cart = z;
+}
+
+void	set_point_iso(t_point *pt, float x, float y)
+{
+	pt->x_iso = x;
+	pt->y_iso = y;
 }
 
 t_map	*new_map(int width, int height)
@@ -62,14 +70,15 @@ int parse_line(char *line, t_map *map, int y_act)
 		return (1);
 	while (split_line[x_act])
 	{
-		set_point(&map->grid[x_act][y_act], \
+		set_point_cart(&map->grid[x_act][y_act], \
 		x_act, y_act, ft_atoi(split_line[x_act]));
+		set_point_iso(&map->grid[x_act][y_act], 0, 0);
 		x_act++;
 	}
 	free_2d_array((void **) split_line);
 	return (0);
 }
-//		printf("x %d y %d z %d\n", x_act, y_act, ft_atoi(split_line[x_act]));
+//		printf("x_cart %d y_cart %d z_cart %d\n", x_act, y_act, ft_atoi(split_line[x_act]));
 
 t_map	*parse_map(const char *string)
 {
