@@ -37,7 +37,9 @@ typedef struct s_data {
 	int				line_length;
 	int				endian;
 	t_dimension_2d	window_size;
+	t_dimension_2d	object_size;
 	t_map			*map;
+	double theta;
 }	t_data;
 
 void			draw_line(t_point p0, t_point p1, t_data *img);

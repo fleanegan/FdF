@@ -80,7 +80,7 @@ void	move_grid(t_map *map, int x_off, int y_off, int z_off)
 		y = 0;
 		while (y < map->height)
 		{
-			p0 = &map->grid_cart[x][y];
+			p0 = &map->grid_iso[x][y];
 			set_point(p0, p0->x + x_off, p0->y + y_off, p0->z + z_off);
 			y++;
 		}
