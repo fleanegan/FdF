@@ -4,16 +4,20 @@
 t_dimension_2d	init_t_dimension(t_dimension_2d *result);
 t_dimension_2d	update_extrema(t_dimension_2d *result, t_point *p);
 
-void	cart2iso(t_point *in)
+void cart2iso(t_point *in, t_point *out, double theta)
 {
 	double	x_tmp;
 	double	y_tmp;
+	double	x_rot;
+	double	y_rot;
 
-	x_tmp = (in->x - in->y) / sqrt(2);
-	y_tmp = (in->x - 2 * in->z + in->y) / sqrt(6);
-	in->x = x_tmp;
-	in->y = y_tmp;
-	in->z = 0;
+	x_rot = cos(theta) * in->x - sin(theta) * in->y;
+	y_rot = sin(theta) * in->x + cos(theta) * in->y;
+	x_tmp = (x_rot - y_rot) / sqrt(2);
+	y_tmp = (x_rot - 2 * in->z + y_rot) / sqrt(6);
+	out->x = x_tmp;
+	out->y = y_tmp;
+	out->z = 0;
 }
 
 t_dimension_2d	measure_necessary_screen_space(t_map *map)
@@ -30,7 +34,7 @@ t_dimension_2d	measure_necessary_screen_space(t_map *map)
 		y = 0;
 		while (y < map->height)
 		{
-			p = map->grid[x][y];
+			p = map->grid_iso[x][y];
 			result = update_extrema(&result, &p);
 			y++;
 		}

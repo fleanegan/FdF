@@ -36,6 +36,21 @@ Test(test_parsing, get_map_dimensions_for_file_with_one_row_and_two_columns)
 	cr_assert_eq(heigth, 1);
 }
 
+Test(test_parsing, create_empty_grid_cart)
+{
+	t_map	*map = malloc(sizeof(t_map));
+	int		width = 2;
+	int		height = 2;
+	map->width = width;
+	map->height = height;
+
+	t_point	**res = new_grid(map);
+
+	cr_assert_not_null(res);
+	free_2d_array(((void **)res));
+}
+
+
 Test(test_parsing, create_empty_map)
 {
 	int	width = 2;
@@ -44,9 +59,10 @@ Test(test_parsing, create_empty_map)
 	t_map *res = new_map(width, height);
 
 	cr_assert_not_null(res);
-	free_2d_array(((void **)res->grid));
+	free_2d_array(((void **)res->grid_cart));
 	free(res);
 }
+
 
 Test(test_parsing, creating_map_NULL_terminates_width)
 {
@@ -56,8 +72,8 @@ Test(test_parsing, creating_map_NULL_terminates_width)
 	t_map *res = new_map(width, height);
 
 	cr_assert_not_null(res);
-	cr_assert_null(res->grid[width]);
-	free_2d_array(((void **)res->grid));
+	cr_assert_null(res->grid_cart[width]);
+	free_2d_array(((void **)res->grid_cart));
 	free(res);
 }
 
@@ -74,11 +90,11 @@ Test(test_parsing, return_minus_one_if_not_all_columns_equal_len)
 Test(test_parsing, parse_map_with_one_point)
 {
 	t_map *map = parse_map("assets/dummy_map_one_point");
-	t_point *only_point = (*map->grid);
+	t_point *only_point = (*map->grid_cart);
 
 	cr_assert_not_null(map);
 	cr_assert_not_null(only_point);
-	free_2d_array(((void **)map->grid));
+	free_2d_array(((void **)map->grid_cart));
 	free(map);
 }
 
@@ -89,10 +105,10 @@ Test(test_parsing, parse_one_line_with_one_column)
 
 	parse_line(line, map, 0);
 
-	cr_assert_eq(map->grid[0][0].x, 0);
-	cr_assert_eq(map->grid[0][0].y, 0);
-	cr_assert_eq(map->grid[0][0].z, 1);
-	free_2d_array(((void **)map->grid));
+	cr_assert_eq(map->grid_cart[0][0].x, 0);
+	cr_assert_eq(map->grid_cart[0][0].y, 0);
+	cr_assert_eq(map->grid_cart[0][0].z, 1);
+	free_2d_array(((void **)map->grid_cart));
 	free(map);
 }
 
@@ -103,13 +119,13 @@ Test(test_parsing, parse_one_line_with_two_columns)
 
 	parse_line(line, map, 0);
 
-	cr_assert_eq(map->grid[0][0].x, 0);
-	cr_assert_eq(map->grid[0][0].y, 0);
-	cr_assert_eq(map->grid[0][0].z, 1);
-	cr_assert_eq(map->grid[1][0].x, 1);
-	cr_assert_eq(map->grid[1][0].y, 0);
-	cr_assert_eq(map->grid[1][0].z, 2);
-	free_2d_array(((void **)map->grid));
+	cr_assert_eq(map->grid_cart[0][0].x, 0);
+	cr_assert_eq(map->grid_cart[0][0].y, 0);
+	cr_assert_eq(map->grid_cart[0][0].z, 1);
+	cr_assert_eq(map->grid_cart[1][0].x, 1);
+	cr_assert_eq(map->grid_cart[1][0].y, 0);
+	cr_assert_eq(map->grid_cart[1][0].z, 2);
+	free_2d_array(((void **)map->grid_cart));
 	free(map);
 }
 
@@ -118,23 +134,23 @@ Test(test_parsing, parse_map_two_by_two)
 	t_map *map = parse_map("assets/dummy_map_two_by_two");
 
 	cr_assert_not_null(map);
-	cr_assert_eq(map->grid[0][0].z, 0);
-	cr_assert_eq(map->grid[1][0].z, 1);
-	cr_assert_eq(map->grid[0][1].z, 2);
-	cr_assert_eq(map->grid[1][1].z, 3);
+	cr_assert_eq(map->grid_cart[0][0].z, 0);
+	cr_assert_eq(map->grid_cart[1][0].z, 1);
+	cr_assert_eq(map->grid_cart[0][1].z, 2);
+	cr_assert_eq(map->grid_cart[1][1].z, 3);
 
-	cr_assert_eq(map->grid[0][0].x, 0);
-	cr_assert_eq(map->grid[1][0].x, 1);
-	cr_assert_eq(map->grid[0][1].x, 0);
-	cr_assert_eq(map->grid[1][1].x, 1);
+	cr_assert_eq(map->grid_cart[0][0].x, 0);
+	cr_assert_eq(map->grid_cart[1][0].x, 1);
+	cr_assert_eq(map->grid_cart[0][1].x, 0);
+	cr_assert_eq(map->grid_cart[1][1].x, 1);
 
-	cr_assert_eq(map->grid[0][0].y, 0);
-	cr_assert_eq(map->grid[1][0].y, 0);
-	cr_assert_eq(map->grid[0][1].y, 1);
-	cr_assert_eq(map->grid[1][1].y, 1);
+	cr_assert_eq(map->grid_cart[0][0].y, 0);
+	cr_assert_eq(map->grid_cart[1][0].y, 0);
+	cr_assert_eq(map->grid_cart[0][1].y, 1);
+	cr_assert_eq(map->grid_cart[1][1].y, 1);
 
 	cr_assert_eq(map->width, 2);
 	cr_assert_eq(map->height, 2);
-	free_2d_array(((void **)map->grid));
+	free_2d_array(((void **)map->grid_cart));
 	free(map);
 }

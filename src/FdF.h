@@ -22,7 +22,8 @@ typedef struct s_dimension_2d
 
 typedef struct s_map
 {
-	t_point	**grid;
+	t_point	**grid_cart;
+	t_point	**grid_iso;
 	int		width;
 	int		height;
 }		t_map;
@@ -41,14 +42,15 @@ typedef struct s_data {
 
 void			draw_line(t_point p0, t_point p1, t_data *img);
 void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void			cart2iso(t_point *in);
+void cart2iso(t_point *in, t_point *out, double theta);
 void			print_coordinates(t_point *pt);
 void			draw_grid(t_map *map, t_data *img);
-void			zoom_grid(t_map *map, float xy_factor, float z_factor);
-void			project_grid(t_map *map);
+void zoom_grid(t_map *map, float xy_factor, float z_factor, t_point **grid);
+void project_grid(t_map *map, double theta);
 void			move_grid(t_map *map, int x_off, int y_off, int z_off);
 t_dimension_2d	measure_necessary_screen_space(t_map *map);
 float	calc_zoom_factor(t_dimension_2d *img, t_dimension_2d *screen);
+void	*free_map(t_map **map);
 
 
 // parsing
@@ -57,5 +59,6 @@ int measure_map(const char *file_name, int *width, int *height);
 t_map * parse_map(const char *string);
 int parse_line(char *line, t_map *map, int y_act);
 void	set_point(t_point *pt, double x, double y, double z);
+t_point	**new_grid(t_map *map);
 
 #endif //FDF_H
