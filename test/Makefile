@@ -2,6 +2,8 @@ SRC				= ../src/isometric_projection.c \
 				../src/parsing.c \
 				../src/parsing_measure_map.c \
 				../src/debug.c \
+				../src/matrix.c \
+
 
 TEST_HEADERS		= $(shell find ./ -type f -name "*.h")
 
@@ -27,7 +29,7 @@ CFLAGS				= -Wall -Wextra -Werror
 
 ${NAME}:			$(TARGET_NAME) $(SRC) $(TEST_HEADERS) $(TEST_SOURCES)
 					$(MAKE) -C  ../ all
-					${CC} -D TESTING ${CFLAGS} -o $(NAME) $(TEST_SOURCES) $(SRC) $(ICRITERION) $(ISRC) $(ILIBFT)
+					${CC} -D TESTING ${CFLAGS} -o $(NAME) $(TEST_SOURCES) $(SRC) $(ICRITERION) $(ISRC) $(ILIBFT) -lm
 
 all:				${NAME}
 

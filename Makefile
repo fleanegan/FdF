@@ -28,6 +28,7 @@ SRC_NAME =	main.c \
 			parsing_measure_map.c \
 			draw_grid.c \
 			debug.c \
+			matrix.c \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 

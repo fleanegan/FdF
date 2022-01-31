@@ -4,17 +4,21 @@
 t_dimension_2d	init_t_dimension(t_dimension_2d *result);
 t_dimension_2d	update_extrema(t_dimension_2d *result, t_point *p);
 
-void cart2iso(t_point *in, t_point *out, double theta)
+void cart2iso(t_point *in, t_point *out, double alpha, double beta)
 {
 	double	x_tmp;
 	double	y_tmp;
-	double	x_rot;
-	double	y_rot;
+	double	x_rot_around_z;
+	double	y_rot_around_z;
+	double	y_rot_around_x;
+	double	z_rot_around_x;
 
-	x_rot = cos(theta) * in->x - sin(theta) * in->y;
-	y_rot = sin(theta) * in->x + cos(theta) * in->y;
-	x_tmp = (x_rot - y_rot) / sqrt(2);
-	y_tmp = (x_rot - 2 * in->z + y_rot) / sqrt(6);
+	x_rot_around_z = cos(alpha) * in->x - sin(alpha) * in->y;
+	y_rot_around_z = sin(alpha) * in->x + cos(alpha) * in->y;
+	y_rot_around_x = cos(beta) * y_rot_around_z - sin(beta) * in->z;
+	z_rot_around_x = sin(beta) * y_rot_around_z + cos(beta) * in->z;
+	x_tmp = (x_rot_around_z - y_rot_around_x) / sqrt(2);
+	y_tmp = (x_rot_around_z - 2 * z_rot_around_x + y_rot_around_x) / sqrt(6);
 	out->x = x_tmp;
 	out->y = y_tmp;
 	out->z = 0;

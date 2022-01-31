@@ -25,9 +25,13 @@ int key_handler(int keycode, t_data *img)
 		exit(0);
 	}
 	if (keycode == 65361)
-		img->theta += 3.1415 / 360. * 5;
+		img->alpha += 3.1415 / 360. * 5;
 	if (keycode == 65363)
-		img->theta -= 3.1415 / 360. * 5;
+		img->alpha -= 3.1415 / 360. * 5;
+	if (keycode == 65362)
+		img->beta += 3.1415 / 360. * 5;
+	if (keycode == 65364)
+		img->beta -= 3.1415 / 360. * 5;
 	render_frame(img);
 	return 0;
 }
@@ -36,7 +40,7 @@ void init_view(t_data *img) {
 	t_dimension_2d	current_dimensions;
 	float			factor;
 
-	project_grid(img->map, 0);
+	project_grid(img->map, 0, 0);
 	current_dimensions = measure_necessary_screen_space(img->map);
 	factor = calc_zoom_factor(&current_dimensions, &img->window_size);
 	zoom_grid(img->map, 0.85 * factor, 0.85 * factor, img->map->grid_cart);
@@ -50,7 +54,7 @@ int render_frame(void *void_img)
 
 	img = void_img;
 	all_pixels_black(img);
-	project_grid(img->map, img->theta);
+	project_grid(img->map, img->alpha, img->beta);
 	current_dimensions = measure_necessary_screen_space(img->map);
 	move_grid(img->map, (img->window_size.x_max - current_dimensions.x_min - current_dimensions.x_max) / 2,
 			  (img->window_size.y_max - current_dimensions.y_min - current_dimensions.y_max) / 2, 0);
@@ -89,7 +93,8 @@ int	main(int argc, char **argv)
 	img.mlx_win = mlx_new_window(img.mlx, img.window_size.x_max, img.window_size.y_max, "Hello world!");
 	img.img = mlx_new_image(img.mlx, img.window_size.x_max, img.window_size.y_max);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	img.theta = 0;
+	img.alpha = 0;
+	img.beta = 0;
 	if (argc == 2)
 	{
 		img.map = parse_map(argv[1]);

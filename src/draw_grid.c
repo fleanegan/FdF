@@ -48,7 +48,7 @@ void zoom_grid(t_map *map, float xy_factor, float z_factor, t_point **grid)
 	}
 }
 
-void project_grid(t_map *map, double theta)
+void project_grid(t_map *map, double alpha, double beta)
 {
 	int		x;
 	int		y;
@@ -62,7 +62,7 @@ void project_grid(t_map *map, double theta)
 		{
 			p_cart = &map->grid_cart[x][y];
 			p_iso = &map->grid_iso[x][y];
-			cart2iso(p_cart, p_iso, theta);
+			cart2iso(p_cart, p_iso, alpha, beta);
 			y++;
 		}
 		x++;

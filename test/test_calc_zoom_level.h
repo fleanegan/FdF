@@ -3,8 +3,9 @@
 Test(test_calc_zoom_level, measure_flat_map_returns_xy_size)
 {
 	t_map *map = new_map(2, 2);
-	parse_line("0 1", map, 0);
-	parse_line("2 3", map, 1);
+	parse_line("0 0", map, 0);
+	parse_line("0 0", map, 1);
+	map->grid_iso = map->grid_cart;
 
 	t_dimension_2d result = measure_necessary_screen_space(map);
 	cr_assert_eq(result.x_max, 1);
