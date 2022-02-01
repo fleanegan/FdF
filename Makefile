@@ -6,7 +6,7 @@
 #    By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/22 16:08:15 by tsiguenz          #+#    #+#              #
-#    Updated: 2022/01/27 15:47:00 by fschlute         ###   ########.fr        #
+#   Updated: 2022/02/01 14:10:41 by                  ###   ########.fr       # #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,12 +23,13 @@ OBJ_PATH = obj/
 SRC_NAME =	main.c \
 			draw_line.c \
 			draw.c \
-			isometric_projection.c \
+			view_operations.c \
 			parsing.c \
 			parsing_measure_map.c \
-			draw_grid.c \
+			manipulate_grid.c \
 			debug.c \
 			matrix.c \
+			memory.c \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 

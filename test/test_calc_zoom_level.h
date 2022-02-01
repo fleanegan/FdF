@@ -5,6 +5,7 @@ Test(test_calc_zoom_level, measure_flat_map_returns_xy_size)
 	t_map *map = new_map(2, 2);
 	parse_line("0 0", map, 0);
 	parse_line("0 0", map, 1);
+	free_2d_array((void **)map->grid_iso);
 	map->grid_iso = map->grid_cart;
 
 	t_dimension_2d result = measure_necessary_screen_space(map);
@@ -12,6 +13,9 @@ Test(test_calc_zoom_level, measure_flat_map_returns_xy_size)
 	cr_assert_eq(result.x_min, 0);
 	cr_assert_eq(result.y_max, 1);
 	cr_assert_eq(result.y_min, 0);
+	free_2d_array((void **)map->grid_cart);
+	free(map);
+	//free_map(&map);
 }
 
 Test(test_calc_zoom_level, if_screen_size_double_of_needed_return_two)

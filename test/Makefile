@@ -1,8 +1,12 @@
-SRC				= ../src/isometric_projection.c \
-				../src/parsing.c \
-				../src/parsing_measure_map.c \
-				../src/debug.c \
-				../src/matrix.c \
+SRC				= ../src/draw_line.c \
+                  	../src/draw.c \
+					../src/view_operations.c \
+					../src/parsing.c \
+					../src/parsing_measure_map.c \
+					../src/manipulate_grid.c \
+					../src/debug.c \
+					../src/matrix.c \
+					../src/memory.c \
 
 
 TEST_HEADERS		= $(shell find ./ -type f -name "*.h")
@@ -34,6 +38,7 @@ ${NAME}:			$(TARGET_NAME) $(SRC) $(TEST_HEADERS) $(TEST_SOURCES)
 all:				${NAME}
 
 fclean:
+					$(MAKE) -C  ../ fclean
 					${RM} ${NAME}
 
 re:					fclean all

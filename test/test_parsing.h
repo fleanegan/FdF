@@ -47,7 +47,8 @@ Test(test_parsing, create_empty_grid_cart)
 	t_point	**res = new_grid(map);
 
 	cr_assert_not_null(res);
-	free_2d_array(((void **)res));
+	free_2d_array((void **) res);
+	free(map);
 }
 
 
@@ -59,8 +60,7 @@ Test(test_parsing, create_empty_map)
 	t_map *res = new_map(width, height);
 
 	cr_assert_not_null(res);
-	free_2d_array(((void **)res->grid_cart));
-	free(res);
+	free_map(&res);
 }
 
 
@@ -73,8 +73,7 @@ Test(test_parsing, creating_map_NULL_terminates_width)
 
 	cr_assert_not_null(res);
 	cr_assert_null(res->grid_cart[width]);
-	free_2d_array(((void **)res->grid_cart));
-	free(res);
+	free_map(&res);
 }
 
 Test(test_parsing, return_minus_one_if_not_all_columns_equal_len)
@@ -94,8 +93,7 @@ Test(test_parsing, parse_map_with_one_point)
 
 	cr_assert_not_null(map);
 	cr_assert_not_null(only_point);
-	free_2d_array(((void **)map->grid_cart));
-	free(map);
+	free_map(&map);
 }
 
 Test(test_parsing, parse_one_line_with_one_column)
@@ -108,8 +106,7 @@ Test(test_parsing, parse_one_line_with_one_column)
 	cr_assert_eq(map->grid_cart[0][0].x, 0);
 	cr_assert_eq(map->grid_cart[0][0].y, 0);
 	cr_assert_eq(map->grid_cart[0][0].z, 1);
-	free_2d_array(((void **)map->grid_cart));
-	free(map);
+	free_map(&map);
 }
 
 Test(test_parsing, parse_one_line_with_two_columns)
@@ -125,8 +122,7 @@ Test(test_parsing, parse_one_line_with_two_columns)
 	cr_assert_eq(map->grid_cart[1][0].x, 1);
 	cr_assert_eq(map->grid_cart[1][0].y, 0);
 	cr_assert_eq(map->grid_cart[1][0].z, 2);
-	free_2d_array(((void **)map->grid_cart));
-	free(map);
+	free_map(&map);
 }
 
 Test(test_parsing, parse_map_two_by_two)
@@ -151,6 +147,5 @@ Test(test_parsing, parse_map_two_by_two)
 
 	cr_assert_eq(map->width, 2);
 	cr_assert_eq(map->height, 2);
-	free_2d_array(((void **)map->grid_cart));
-	free(map);
+	free_map(&map);
 }

@@ -1,76 +1,58 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By:  <>                                        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/01 14:45:29 by                   #+#    #+#             */
+/*   Updated: 2022/02/01 14:45:32 by                  ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include "FdF.h"
 
-t_point	*new_point(float x, float y, float z)
-{
-	t_point	*result;
+static int	fill_map(t_map *map, int fd);
 
-	result = malloc(sizeof(t_point));
-	if (! result)
-		return (NULL);
-	result->x = x;
-	result->y = y;
-	result->z = z;
-	return (result);
-}
-
-void	*free_map(t_map **map)
+t_map	*parse_map(const char *string)
 {
-	free_2d_array((void **)(*map)->grid_cart);
-	free_2d_array((void **)(*map)->grid_iso);
-	free(*map);
-	*map = NULL;
-	return (NULL);
-}
-
-void	set_point(t_point *pt, double x, double y, double z)
-{
-	pt->x = x;
-	pt->y = y;
-	pt->z = z;
-}
-
-t_point	**new_grid(t_map *map)
-{
-	t_point	**result;
+	int		fd;
 	int		width;
-
-	width = map->width;
-	result = malloc((width + 1) * sizeof (t_point *));
-	if (! result)
-		return (NULL);
-	result[width] = NULL;
-	while (width--)
-	{
-		result[width] = malloc((map->height) * sizeof(t_point));
-		if (! result[width])
-		{
-			free_2d_array((void **) result);
-			return (NULL);
-		}
-	}
-	return result;
-}
-
-t_map	*new_map(int width, int height)
-{
+	int		height;
 	t_map	*result;
 
-	result = malloc(sizeof(t_map));
-	if (! result)
+	fd = open(string, O_RDONLY);
+	if (fd < 0 || measure_map(string, &width, &height))
 		return (NULL);
-	result->width = width;
-	result->height = height;
-	result->grid_cart = new_grid(result);
-	if (! result->grid_cart)
-		return (free_map(&result));
-	result->grid_iso = new_grid(result);
-	if (! result->grid_iso)
-		return (free_map(&result));
+	result = new_map(width, height);
+	if (! result || fill_map(result, fd))
+		free_map(&result);
+	close(fd);
 	return (result);
 }
 
-int parse_line(char *line, t_map *map, int y_act)
+int	fill_map(t_map *map, int fd)
+{
+	char	*line;
+	int		y_act;
+
+	y_act = 0;
+	while (gnl(fd, &line))
+	{
+		if (parse_line(line, map, y_act))
+		{
+			free(line);
+			return (1);
+		}
+		free(line);
+		y_act++;
+	}
+	gnl(fd, NULL);
+	return (0);
+}
+
+int	parse_line(char *line, t_map *map, int y_act)
 {
 	char	**split_line;
 	int		x_act;
@@ -87,36 +69,4 @@ int parse_line(char *line, t_map *map, int y_act)
 	}
 	free_2d_array((void **) split_line);
 	return (0);
-}
-//		printf("x %d y %d z %d\n", x_act, y_act, ft_atoi(split_line[x_act]));
-
-t_map	*parse_map(const char *string)
-{
-	int		fd;
-	char	*line;
-	int		width;
-	int		height;
-	int		y_act;
-	t_map	*result;
-
-	y_act = 0;
-	fd = open(string, O_RDONLY);
-	if (fd < 0)
-		return (NULL);
-	if (measure_map(string,&width, &height))
-		return (NULL);
-	result = new_map(width, height);
-	while (gnl(fd, &line))
-	{
-		if (parse_line(line, result, y_act))
-		{
-			free(line);
-			return (free_map(&result));
-		}
-		free(line);
-		y_act++;
-	}
-	gnl(fd, NULL);
-	close(fd);
-	return (result);
 }

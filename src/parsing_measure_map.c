@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_measure_map.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By:  <>                                        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/01 14:45:44 by                   #+#    #+#             */
+/*   Updated: 2022/02/01 14:45:44 by                  ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "FdF.h"
 
 static int	initialize(const char *file_name, int *width, int *height, int *fd);
@@ -15,12 +27,12 @@ int	measure_map(const char *file_name, int *width, int *height)
 	while (gnl(fd, &line))
 	{
 		tmp_width = calc_width(line);
-		if ((*width && tmp_width != *width) || tmp_width < 0)
+		free(line);
+		if (tmp_width < 0 || (*width != 0 && tmp_width != *width))
 			return (prepare_exit(fd, -1));
 		*width = tmp_width;
 		(*height)++;
 	}
-	ft_putendl_fd("map measures ok", 1);
 	return (prepare_exit(fd, 0));
 }
 
@@ -41,11 +53,7 @@ int	calc_width(char *line)
 
 	split_line = ft_split(line, ' ');
 	if (! split_line)
-	{
-		free(line);
 		return (-1);
-	}
-	free(line);
 	tmp_width = (int) count_entries_in_2d_char_array(split_line);
 	free_2d_array((void **)split_line);
 	return (tmp_width);
