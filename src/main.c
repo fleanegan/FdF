@@ -6,7 +6,7 @@
 /*   By:  <>                                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:44:19 by                   #+#    #+#             */
-/*   Updated: 2022/02/01 14:51:15 by                  ###   ########.fr       */
+/*   Updated: 2022/02/01 18:16:11 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include "libft.h"
 #include "FdF.h"
 #include <mlx.h>
-
-int	render_frame(void *void_img);
 
 void	tear_down_mlx_session(t_data *img)
 {
@@ -28,30 +26,6 @@ void	tear_down_mlx_session(t_data *img)
 	exit(0);
 }
 
-int	key_handler(int keycode, t_data *img)
-{
-	if (keycode == 65307 || keycode == 38)
-		tear_down_mlx_session(img);
-	else if (keycode == 65433)
-		img->orientation = multiply(&img->orientation, euler2rot(0, 5, 0));
-	else if (keycode == 65431)
-		img->orientation = multiply(&img->orientation, euler2rot(0, -5, 0));
-	else if (keycode == 65430)
-		img->orientation = multiply(&img->orientation, euler2rot(-5, 0, 0));
-	else if (keycode == 65432)
-		img->orientation = multiply(&img->orientation, euler2rot(5, 0, 0));
-	else if (keycode == 65437)
-		img->orientation = multiply(&img->orientation, euler2rot(0, 0, -5));
-	else if (keycode == 65438)
-		img->orientation = multiply(&img->orientation, euler2rot(0, 0, 5));
-	else if (keycode == 223)
-		img->z_scale += 0.1f;
-	else if (keycode == 48)
-		img->z_scale -= 0.1f;
-	render_frame(img);
-	return (0);
-}
-
 int	render_frame(void *void_img)
 {
 	t_data			*img;
@@ -62,8 +36,11 @@ int	render_frame(void *void_img)
 	apply_transformations_to_grid(img->map, img->orientation, img->z_scale);
 	dimensions_act = measure_necessary_screen_space(img->map);
 	move_grid(img->map, \
-	(img->win_size.x_max - dimensions_act.x_min - dimensions_act.x_max) / 2, \
-	(img->win_size.y_max - dimensions_act.y_min - dimensions_act.y_max) / 2, 0);
+	(double)(img->win_size.x_max - dimensions_act.x_min - dimensions_act.x_max) \
+		/ 2. * img->x_offset, \
+	(double)(img->win_size.y_max - dimensions_act.y_min - dimensions_act.y_max) \
+		/ 2. * img->y_offset, 0);
+	zoom_grid(img->map, img->zoom, img->map->grid_iso);
 	draw_grid(img->map, img);
 	mlx_put_image_to_window(img->mlx, img->mlx_win, img->img, 0, 0);
 	return (0);

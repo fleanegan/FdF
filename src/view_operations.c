@@ -6,7 +6,7 @@
 /*   By:  <>                                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:44:27 by                   #+#    #+#             */
-/*   Updated: 2022/02/01 14:51:21 by                  ###   ########.fr       */
+/*   Updated: 2022/02/01 18:14:30 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,18 @@ static t_dimension_2d	update_extrema(t_dimension_2d *result, t_point *p);
 
 void	init_view(t_data *img)
 {
-	t_dimension_2d	current_dimensions;
 	float			factor;
 
 	img->orientation = init_with_isometric_orientation();
 	apply_transformations_to_grid(img->map, img->orientation, 0);
-	current_dimensions = measure_necessary_screen_space(img->map);
-	factor = calc_zoom_factor(&current_dimensions, &img->win_size);
-	zoom_grid(img->map, 0.85f * factor, 0.85f * factor, img->map->grid_cart);
-	current_dimensions = measure_necessary_screen_space(img->map);
+	img->object_size = measure_necessary_screen_space(img->map);
+	factor = 0.85f * calc_zoom_factor(&img->object_size, &img->win_size);
+	zoom_grid(img->map, factor, img->map->grid_cart);
+	img->object_size = measure_necessary_screen_space(img->map);
 	img->z_scale = 1;
+	img->x_offset = 1;
+	img->y_offset = 1;
+	img->zoom = 1;
 }
 
 t_dimension_2d	measure_necessary_screen_space(t_map *map)

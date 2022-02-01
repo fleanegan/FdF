@@ -30,6 +30,7 @@ SRC_NAME =	main.c \
 			debug.c \
 			matrix.c \
 			memory.c \
+			key_handling.c \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 

@@ -6,13 +6,13 @@
 /*   By:  <>                                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:43:44 by                   #+#    #+#             */
-/*   Updated: 2022/02/01 14:54:35 by                  ###   ########.fr       */
+/*   Updated: 2022/02/01 18:17:56 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
 
-void	zoom_grid(t_map *map, float xy_factor, float z_factor, t_point **grid)
+void	zoom_grid(t_map *map, float zoom, t_point **grid)
 {
 	int		x;
 	int		y;
@@ -26,7 +26,7 @@ void	zoom_grid(t_map *map, float xy_factor, float z_factor, t_point **grid)
 		{
 			p0 = &grid[x][y];
 			set_point(\
-			p0, p0->x * xy_factor, p0->y * xy_factor, p0->z * z_factor);
+			p0, p0->x * zoom, p0->y * zoom, p0->z * zoom);
 			y++;
 		}
 		x++;
