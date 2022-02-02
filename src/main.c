@@ -46,19 +46,32 @@ int	render_frame(void *void_img)
 	return (0);
 }
 
-t_data	init_mlx(void)
+int	init_mlx(t_data	*img)
 {
-	t_data	img;
-
-	img.win_size.x_max = 1000;
-	img.win_size.y_max = 900;
-	img.mlx = mlx_init();
-	img.mlx_win = mlx_new_window(\
-		img.mlx, img.win_size.x_max, img.win_size.y_max, "Fils D'enFer");
-	img.img = mlx_new_image(img.mlx, img.win_size.x_max, img.win_size.y_max);
-	img.addr = mlx_get_data_addr(\
-	img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	return (img);
+	img->win_size.x_max = 1000;
+	img->win_size.y_max = 900;
+	img->mlx = mlx_init();
+	if (! img->mlx)
+		return (1);
+	img->mlx_win = mlx_new_window(\
+		img->mlx, img->win_size.x_max, img->win_size.y_max, "Fils D'enFer");
+	if (! img->mlx_win)
+	{
+		free(img->mlx);
+		return (1);
+	}
+	img->img = mlx_new_image(\
+		img->mlx, img->win_size.x_max, img->win_size.y_max);
+	if (! img->mlx_win)
+	{
+		mlx_destroy_window(img->mlx, img->mlx_win);
+		mlx_destroy_display(img->mlx);
+		free(img->mlx);
+		return (1);
+	}
+	img->addr = mlx_get_data_addr(\
+	img->img, &img->bits_per_pixel, &img->line_length, &img->endian);
+	return (0);
 }
 
 #ifndef TESTING
@@ -67,13 +80,18 @@ int	main(int argc, char **argv)
 {
 	t_data	img;
 
-	img = init_mlx();
+	if (init_mlx(&img))
+		return (1);
 	if (argc == 2)
 	{
 		img.map = parse_map(argv[1]);
 		if (! img.map)
 		{
 			ft_putendl_fd("img->map emptey sa mer", 1);
+			mlx_destroy_image(img.mlx, img.img);
+			mlx_destroy_window(img.mlx, img.mlx_win);
+			mlx_destroy_display(img.mlx);
+			free(img.mlx);
 			return (1);
 		}
 		init_view(&img);

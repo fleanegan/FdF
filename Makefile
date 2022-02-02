@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/12/22 16:08:15 by tsiguenz          #+#    #+#              #
-#   Updated: 2022/02/01 14:10:41 by                  ###   ########.fr       # #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = fdf
 
 # Paths
@@ -61,14 +49,14 @@ PRE:
 	@make -C $(LIB_PATH)/libft/ --no-print-directory
 	@make -C $(LIB_PATH)/mlx/ --no-print-directory
 
-
+#$(CC) $(CFLAGS) $(LIBFT) -g -I/usr/include -I$(LIB_PATH)/mlx -I$(SRC_PATH) -o $@ -c $<
 $(NAME): PRE $(OBJ)
 	@echo "Build $(NAME)"
 	@$(CC) -g $(CFLAGS) $(OBJ) $(LIBFT) $(MLXFLAGS) -o $(NAME)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@mkdir -p $(OBJ_PATH)
-	$(CC) $(CFLAGS) $(LIBFT) -g -I/usr/include -I$(LIB_PATH)/mlx -I$(SRC_PATH) -o $@ -c $<
+	$(CC) $(CFLAGS) -I$(LIB_PATH)/libft -g -I/usr/include -I$(LIB_PATH)/mlx -I$(SRC_PATH) -o $@ -c $<
 
 clean:
 	@make clean -C $(LIB_PATH)libft/ --no-print-directory

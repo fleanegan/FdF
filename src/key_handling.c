@@ -15,9 +15,9 @@
 
 void	handle_linear_key_events(int keycode, t_data *img)
 {
-	if (keycode == 223)
+	if (keycode == 45)
 		img->z_scale += 0.1f;
-	else if (keycode == 48)
+	else if (keycode == 61)
 		img->z_scale -= 0.1f;
 	else if (keycode == 65362)
 		img->y_offset += 0.1f;
@@ -27,9 +27,9 @@ void	handle_linear_key_events(int keycode, t_data *img)
 		img->x_offset += 0.1f;
 	else if (keycode == 65363)
 		img->x_offset -= 0.1f;
-	else if (keycode == 43)
+	else if (keycode == 46)
 		img->zoom += 0.1f;
-	else if (keycode == 45)
+	else if (keycode == 44)
 		img->zoom -= 0.1f;
 	render_frame(img);
 }
