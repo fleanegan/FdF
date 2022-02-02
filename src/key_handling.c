@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "FdF.h"
-#include <stdio.h>
 
 void	handle_linear_key_events(int keycode, t_data *img)
 {
@@ -31,7 +30,6 @@ void	handle_linear_key_events(int keycode, t_data *img)
 		img->zoom += 0.1f;
 	else if (keycode == 44)
 		img->zoom -= 0.1f;
-	render_frame(img);
 }
 
 void	handle_rotation_key_events(int keycode, t_data *img)
@@ -52,10 +50,10 @@ void	handle_rotation_key_events(int keycode, t_data *img)
 
 int	key_handler(int keycode, t_data *img)
 {
-	printf("key : %d\n", keycode);
 	if (keycode == 65307 || keycode == 38)
 		tear_down_mlx_session(img);
 	handle_rotation_key_events(keycode, img);
 	handle_linear_key_events(keycode, img);
+	render_frame(img);
 	return (0);
 }

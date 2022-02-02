@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "libft.h"
 #include "FdF.h"
 #include <mlx.h>
@@ -80,24 +79,24 @@ int	main(int argc, char **argv)
 {
 	t_data	img;
 
-	if (init_mlx(&img))
-		return (1);
 	if (argc == 2)
 	{
 		img.map = parse_map(argv[1]);
 		if (! img.map)
 		{
-			ft_putendl_fd("img->map emptey sa mer", 1);
-			mlx_destroy_image(img.mlx, img.img);
-			mlx_destroy_window(img.mlx, img.mlx_win);
-			mlx_destroy_display(img.mlx);
-			free(img.mlx);
+			ft_putendl_fd("error in map", 1);
+			return (1);
+		}
+		if (init_mlx(&img))
+		{
+			free_map(&img.map);
 			return (1);
 		}
 		init_view(&img);
+		ft_putendl_fd("init done", 1);
+		render_frame(&img);
 		mlx_key_hook(img.mlx_win, key_handler, &img);
 		mlx_loop(img.mlx);
-		puts("stopped");
 	}
 	return (0);
 }

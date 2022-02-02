@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "FdF.h"
 
 static int	fill_map(t_map *map, int fd);

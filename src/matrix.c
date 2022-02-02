@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "FdF.h"
 
 void	zero_init_rotation_matrix(t_rot_matrix *t)

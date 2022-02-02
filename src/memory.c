@@ -50,6 +50,7 @@ t_map	*new_map(int width, int height)
 		return (NULL);
 	result->width = width;
 	result->height = height;
+	result->grid_iso = NULL;
 	result->grid_cart = new_grid(result);
 	if (! result->grid_cart)
 		return (free_map(&result));
