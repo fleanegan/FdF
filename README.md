@@ -9,8 +9,8 @@ and run it as followed:
 ```
 ./fdf [path_to_map]
 ```
-
 An examplemap is located in ./map
+Quit with Escape, move around with arrows, rotate with num pad
 
 # Tests
 The code is NOT unit tested since I did not know how to properly test graphics using the test framework criterion (https://github.com/Snaipe/Criterion). 
